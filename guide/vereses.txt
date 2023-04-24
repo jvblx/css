@@ -1,4 +1,4 @@
-NA VŠETKOM – NO SHUTDOWN
+NA VŠETKOM – NO SHUTDOWN (ak je v "administratively down" najprv ho vypnes, potom zapnes)
 
 no ip domain-lookup
 
@@ -144,4 +144,4 @@ channel-group “číslo” mode auto
 #sw m trunk
 …
 
-#clockrate 128000
+#clockrate 128000 (robis to na serial portoch)
