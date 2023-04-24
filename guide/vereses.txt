@@ -2,118 +2,146 @@ NA VŠETKOM – NO SHUTDOWN
 
 no ip domain-lookup
 
-hostname “meno”
-username “meno” /privilege 15/ password/secret “heslo” –pre SSH
-line con 0
-pass “heslo”
-login
-enable secret “heslo”     -alebo-
-enable password “heslo”
+#hostname “meno”
+#username “meno” /privilege 15/ password/secret “heslo” –pre SSH
+#line con 0
+#password “heslo”
+#login
+#enable secret “heslo”     -alebo-
+#enable password “heslo”
 
-logging synchronous
+#logging synchronous
 
-banner motd *niečo.niečo.niečo*
+#banner motd *niečo.niečo.niečo*
 
-servis pass TAB TAB
+#servis password TAB TAB
 
-security pass min “počet”
+#security pass min “počet”
 
-ip route 0.0.0.0 0.0.0.0 x.x.x.x – nezabudnúť  -alebo-
-ip route 0.0.0.0 0.0.0.0 s0/0/x  
-ip route IP kam chceš ísť – MASKA tej IP – NEXT HOP
-do show ip route
-
-
-VLAN
-vlan “číslo vlan”
-
- int fa0/x-y
-sw mode access
-sw acc vlan “číslo”
-
-sw mode trunk
-
-switchport trunk native vlan “číslo”      (defaultne je native vlan 1 – ak sa mení,mení s ana oboch stranách)
-switchport trunk allowed vlan x-y, z
-switchport trunk allowed vlan add “dalšia”
+#ip route 0.0.0.0 0.0.0.0 x.x.x.x – (nezabudnúť) 
+(ip route IP kam chceš ísť – MASKA tej IP – NEXT HOP)
+(alebo) 
+#ip route 0.0.0.0 0.0.0.0 s0/0/x  
+#do show ip route
 
 
-do show vlan brief
+////VLAN\\\\
 
-do sh ip int br
 
-int fa0/0.x
-enc dot “číslo vlan”
-ip add x.x.x.x + maska
+#vlan “číslo vlan”
 
-manažovateľná vlan –
-vlan “číslo vlan”
-int vlan “číslo vlan”
-ip add x.x.x.x + maska
-SSH/TELNET
-Line vty x y
-Transport input ssh/telnet
-Ip ssh version 2
+#int fa0/x-y
+#sw mode access
+#sw acc vlan “číslo”
 
-Pass “heslo”
-Login
-Enable secret “heslo”
-ALEBO
-Login local  (zahesluje podľa toho čo už je nastavené) (username…)
+#sw mode trunk
 
-Ip domain-name “niečo.sk”
-Crypto key generate rsa
-2048/1024
-DHCP
-ip dhcp excluded x.x.x.x (ktorú nechceme priraďovať)
-ip dhcp pool “meno”
-default-router x.x.x.x
-dns-server x.x.x.x 
-domain-name “niečo.sk”
-network x.x.x.x y.y.y.y (site z ktorej prideľuje)
-na rozhraniach fa g …
-ip address dhcp
+#switchport trunk native vlan “číslo”      (defaultne je native vlan 1 – ak sa mení,mení s ana oboch stranách)
+#switchport trunk allowed vlan x-y, z
+#switchport trunk allowed vlan add “dalšia”
 
-PORT SECURITY
-int ra fa0/x-y
-sw port max “počet MAC”   (defaultne je 1)
-sw port violation shut-restrict-protect  (defaultne je shutdown)
-sw port mac stick – STICKY MAC
-sw port – zapneme   až nakoniec
-NAT
-Accest-list “číslo” permit any
-Accest-list “číslo” permit x.x.x.x WC maska (otočená napr. 255.255.255.0 = 0.0.0.255)
 
-Ip nat inside source list “číslo” int fa0/x overload -> tým ktorým idem von z routru ktorý konfiguruješ
+#do show vlan brief
 
-Rozhranie čo ide von do internetu
-Ip nat outside
-Rozhranie čo ide dnu do siete
-Ip nat inside
-Copy run start
-Del vlan.dat
-Erase startup config
-Erase nvram
-Write memory / wr
+#do sh ip int br
 
-ETHERCHANEL
-show ether sum
+#int fa0/0.x
+#enc dot “číslo vlan”
+#ip add x.x.x.x + maska
 
-PaGP
+
+/////Manažovateľná vlan\\\\\
+#vlan “číslo vlan”
+#int vlan “číslo vlan”
+#ip add x.x.x.x + maska
+
+
+
+/////SSH/TELNET\\\\\
+
+
+#line vty x y
+#transport input ssh/telnet
+#ip ssh version 2
+
+#pass “heslo”
+#login
+#enable secret “heslo”
+(alebo)
+#login local  (zahesluje podľa toho čo už je nastavené) (username…)
+
+#ip domain-name “niečo.sk”
+#crypto key generate rsa
+-2048/1024
+
+
+
+////DHCP\\\\
+
+
+#ip dhcp excluded x.x.x.x (ktorú nechceme priraďovať)
+#ip dhcp pool “meno”
+#default-router x.x.x.x
+#dns-server x.x.x.x 
+#domain-name “niečo.sk”
+#network x.x.x.x y.y.y.y (site z ktorej prideľuje) (na rozhraniach fa g …)
+#ip address dhcp
+
+
+
+////PORT SECURITY\\\\
+
+
+
+#int ra fa0/x-y
+#sw port max “počet MAC”   (defaultne je 1)
+#sw port violation shut-restrict-protect  (defaultne je shutdown)
+#sw port mac stick (STICKY MAC)
+#sw port (aktivacia -> až nakoniec)
+
+
+///NAT\\\
+
+
+#accest-list “číslo” permit any
+#accest-list “číslo” permit x.x.x.x WC maska (otočená napr. 255.255.255.0 = 0.0.0.255)
+
+#ip nat inside source list “číslo” int fa0/x overload -> tým ktorým idem von z routru ktorý konfiguruješ
+
+#ip nat outside (Rozhranie čo ide von do internetu)
+#ip nat inside (Rozhranie čo ide dnu do siete)
+
+#copy run start
+#del vlan.dat
+#erase startup config
+#erase nvram
+#write memory / wr
+#reload (!!DAT NA KONIEC a VYPNI INTERNET PREDTYM!!)
+
+
+
+////ETHERCHANEL\\\\
+
+
+#show ether sum
+
+//PaGP\\
 int ra fa0/x-y
 channel-group “číslo” mode desirable
-OPROTI
+(OPROTI)
 int ra fa0/x-y
 channel-group “číslo” mode auto
-LACP
-int ra fa0/x-y
-channel-group “číslo” mode active
-OPROTI
-int ra fa0/x-y
-channel-group “číslo” mode passive
 
+//LACP\\
+#int ra fa0/x-y
+#channel-group “číslo” mode active
+(OPROTI)
+#int ra fa0/x-y
+#channel-group “číslo” mode passive
 
-všeobecne sa dajú editovať keďže to je ako celok
-int port “číslo port chanellu”
-sw mo trunk
+(všeobecne sa dajú editovať keďže to je ako celok)
+#int port “číslo port chanellu”
+#sw m trunk
 …
+
+#clockrate 128000
